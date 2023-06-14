@@ -1,0 +1,31 @@
+main: me.SkyEden.LinksPlugin.Main
+name: SkyEden
+version: 1.1
+author: SkyEden
+api-version: 1.19
+
+commands:
+  Links:
+    description: "Displays important Sky Eden links."
+  Forum:
+    aliases: forums
+    description: "Displays a link for the specified forum section."
+    usage: "/forum [section]"
+  SetBirthday:
+    description: "Allows you to set your birthday in the server."
+    usage: "/setbirthday [mm/dd]"
+  GetBirthday:
+    description: "Allows you to get the birthday of someone on the server."
+    usage: "/getbirthday [player]"
+  Birthdays:
+    description: "Allows you to get the players with a birthday on the specified date."
+    usage: "/birthdays [mm/dd]"
+  BirthdayPresent:
+    description: "Gives you a present on your birthday."
+    usage: "/birthdaypresent"
+  MinichestTest:
+    description: "Tests minichests."
+    usage: "/minichesttest"
+  SkyEdenBook:
+    description: "Opens the Sky Eden Book."
+    usage: "/skyedenbook"
