@@ -23,7 +23,7 @@ public class SkyEdenBook {
     public static void initialize() {
         book = new ItemStack(Material.ENCHANTED_BOOK);
         bookMeta = book.getItemMeta();
-        bookMeta.setDisplayName(GUIUtils.chat("&6●_&4&lSky_Eden_&r&6Book_&6●"));
+        bookMeta.setDisplayName(GUIUtils.chat("&6● &4&lSky Eden &r&6Book &6●"));
         List<String> lore = new ArrayList<>();
         lore.add(GUIUtils.chat("&7Right Click to open the menu!"));
         bookMeta.setLore(lore);

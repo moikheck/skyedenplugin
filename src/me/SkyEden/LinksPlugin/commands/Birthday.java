@@ -3,18 +3,17 @@ package me.SkyEden.LinksPlugin.commands;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import me.SkyEden.LinksPlugin.Main;
 import me.SkyEden.LinksPlugin.ui.DateValidatorUsingDateFormat;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 public class Birthday implements CommandExecutor {
     public Main plugin;
@@ -27,6 +26,8 @@ public class Birthday implements CommandExecutor {
         File birthdaysFile = new File("plugins/SkyEden/Birthdays.yml");
         String birthday;
         String month;
+        String lastCelebrated = "";
+        String uuid = ((Player) Objects.requireNonNull(Bukkit.getPlayer(sender.getName()))).getUniqueId().toString();
         DateValidatorUsingDateFormat validator;
         boolean part3Bool;
         if (label.equalsIgnoreCase("setbirthday")) {
@@ -41,13 +42,14 @@ public class Birthday implements CommandExecutor {
                 part3Bool = validator.isValid(month);
                 if (birthday.contains("/") && part3Bool) {
                     YamlConfiguration yaml = YamlConfiguration.loadConfiguration(birthdaysFile);
-                    String lastCelebrated = yaml.get(sender.getName().concat(".lastCelebrated")).toString();
-                    yaml.createSection(sender.getName());
-                    yaml.createSection(sender.getName().concat(".birthday"));
-                    yaml.createSection(sender.getName().concat(".lastCelebrated"));
-                    yaml.set(sender.getName().concat(".birthday"), birthday);
-                    yaml.set(sender.getName().concat(".lastCelebrated"), lastCelebrated);
-
+                    if (yaml.get(uuid.concat(".lastCelebrated")) != null) {
+                        lastCelebrated = yaml.get(uuid.concat(".lastCelebrated")).toString();
+                    }
+                        yaml.createSection(uuid);
+                        yaml.createSection(uuid.concat(".birthday"));
+                        yaml.createSection(uuid.concat(".lastCelebrated"));
+                        yaml.set(uuid.concat(".birthday"), birthday);
+                        yaml.set(uuid.concat(".lastCelebrated"), lastCelebrated);
                     try {
                         yaml.save("plugins/SkyEden/Birthdays.yml");
                     } catch (IOException var14) {
@@ -101,14 +103,16 @@ public class Birthday implements CommandExecutor {
                 String day = split[2];
                 today = month.concat("/").concat(day);
                 YamlConfiguration yaml = YamlConfiguration.loadConfiguration(birthdaysFile);
-                String lastCelebrated = yaml.get(sender.getName().concat(".lastCelebrated")).toString();
+                if (yaml.get(uuid.concat(".lastCelebrated")) != null) {
+                    lastCelebrated = yaml.get(uuid.concat(".lastCelebrated")).toString();
+                }
                 if (today.equalsIgnoreCase(birthday) && !lastCelebrated.equalsIgnoreCase(split[0])) {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&dHappy Birthday! Here's a present!"));
-                    yaml.createSection(sender.getName());
-                    yaml.createSection(sender.getName().concat(".birthday"));
-                    yaml.createSection(sender.getName().concat(".lastCelebrated"));
-                    yaml.set(sender.getName().concat(".lastCelebrated"), split[0]);
-                    yaml.set(sender.getName().concat(".birthday"), today);
+                    yaml.createSection(uuid);
+                    yaml.createSection(uuid.concat(".birthday"));
+                    yaml.createSection(uuid.concat(".lastCelebrated"));
+                    yaml.set(uuid.concat(".lastCelebrated"), split[0]);
+                    yaml.set(uuid.concat(".birthday"), today);
 
                     try {
                         yaml.save("plugins/SkyEden/Birthdays.yml");
@@ -135,10 +139,11 @@ public class Birthday implements CommandExecutor {
     public String getBirthday(String user) {
         File birthdaysFile = new File("plugins/SkyEden/Birthdays.yml");
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(birthdaysFile);
+        String uuid = ((Player)Objects.requireNonNull(Bukkit.getPlayer(user))).getUniqueId().toString();
 
         String yamlString;
         try {
-            yamlString = yaml.get(user.concat(".birthday")).toString();
+            yamlString = yaml.get(uuid.concat(".birthday")).toString();
         } catch (NullPointerException var6) {
             yamlString = "unset";
         }
