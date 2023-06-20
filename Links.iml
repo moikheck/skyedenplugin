@@ -23,7 +23,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="spigot-api-1.19.3-R0.1-SNAPSHOT-shaded" level="project" />
     <orderEntry type="library" name="jre1.8" level="project" />
+    <orderEntry type="library" name="spigot-api-1.19.4-R0.1-SNAPSHOT-shaded" level="project" />
   </component>
 </module>
